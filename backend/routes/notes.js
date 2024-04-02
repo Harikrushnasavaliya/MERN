@@ -17,7 +17,7 @@ router.get('/fetchallnotes', fetchUser, async (req, res) => {
 
 
 
-router.get('/addnote', fetchUser, [
+router.post('/addnote', fetchUser, [
     body('title', 'hum pe to hehi na').isLength({ min: 3 }),
     body('description', 'Description atleast 5 characters').isLength({ min: 5 }), async (req, res) => {
         try {

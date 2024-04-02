@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+i{
+  cursor:pointer;
+}
+.custom-footer {
+  justify-content: center;
+  /* Other styles for the footer */
+}

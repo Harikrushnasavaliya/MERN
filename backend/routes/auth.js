@@ -6,7 +6,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const JWT_Secret = "Humpe to he hi na";
-
+let success = false;
 
 
 
@@ -47,8 +47,8 @@ router.post('/createuser', [
             }
         };
         const token = jwt.sign(Data, JWT_Secret);
-        res.json({ token });
-        console.log(token);
+        success = true;
+        res.json({ success, token });
     } catch (error) {
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });
@@ -90,7 +90,8 @@ router.post('/login', [
             }
         };
         const token = jwt.sign(Data, JWT_Secret);
-        res.json({ token });
+        success = true;
+        res.json({ success, token });
         console.log(token);
         // }
     } catch (error) {
