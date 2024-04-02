@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
-    // const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,7 +19,7 @@ const Login = (props) => {
             console.log(json);
             if (json.success) {
                 localStorage.setItem('token', json.token);
-                // history.push("/"); // Redirect to home page
+                navigate('/');
                 props.showAlert("Login successful", "success");
             } else {
                 props.showAlert("Invalid credentials", "danger");
