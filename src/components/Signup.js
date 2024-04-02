@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-// import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
-    // let history = useHistory;
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { name, email, password } = credentials;
@@ -17,8 +19,7 @@ const Signup = () => {
             });
             const json = await response.json();
             console.log(json);
-            localStorage.setItem('token', json.token);
-            // history.push("/");
+            navigate('/login');
         } catch (error) {
             console.error('Error editing note:', error);
         }
