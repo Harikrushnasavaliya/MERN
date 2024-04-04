@@ -15,11 +15,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    userType: {
-        type: String,
-        // enum: ['admin', 'user'],
-        default:'user'
-    },
+    // userType: {
+    //     type: String,
+    //     // enum: ['admin', 'user'],
+    //     default:'user'
+    // },
     date: {
         type: Date,
         default: Date.now 

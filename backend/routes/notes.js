@@ -8,7 +8,7 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetchallnotes', fetchUser, async (req, res) => {
     debugger
     try {
-        if (req.user.id === 'Add your User ID') {
+        if (req.user.id === '660e4f4e028b6c14cfba1bc6') {
             const notes = await Note.find();
             console.log(notes);
             res.json(notes);
@@ -30,6 +30,7 @@ router.post('/addnote', fetchUser, [
     body('description', 'Description atleast 5 characters').isLength({ min: 5 }), async (req, res) => {
         try {
             const { title, description, tag } = req.body;
+            console.log( req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ error: errors.array() });

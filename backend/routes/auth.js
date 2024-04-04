@@ -37,8 +37,8 @@ router.post('/createuser', [
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: secPass,
-            userType: userType 
+            password: secPass
+            // userType: userType 
         });
 
         const Data = {
@@ -46,8 +46,8 @@ router.post('/createuser', [
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                password: user.password,
-                userType: user.userType 
+                password: user.password
+                // userType: user.userType 
             }
         };
         console.log(Data);

@@ -19,7 +19,7 @@ const Login = (props) => {
             if (json.success) {
                 localStorage.setItem('token', json.token);
                 localStorage.setItem('Name', json.Name);
-                navigate('/');
+                navigate('/notes');
                 props.showAlert("Login successful", "success");
             } else {
                 props.showAlert("Invalid credentials", "danger");
@@ -34,6 +34,10 @@ const Login = (props) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
 
+    const goToSignup = () => {
+        navigate('/notes');
+    }
+
     return (
         <div>
             <form className='container' onSubmit={handleSubmit}>
@@ -45,7 +49,8 @@ const Login = (props) => {
                     <label htmlFor="password" className="form-label">Password</label>
                     <input type="password" className="form-control" value={credentials.password} name='password' onChange={onChange} id="password" />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary mx-2">Login</button>
+                <button type="button" className="btn btn-danger mx-2" onClick={goToSignup}>Signup</button>
             </form>
         </div>
     )

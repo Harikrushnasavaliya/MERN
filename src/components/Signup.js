@@ -47,13 +47,13 @@ const Signup = () => {
                         <label htmlFor="cpassword" className="form-label">Confirm Password</label>
                         <input type="password" className="form-control" value={credentials.cpassword} minLength={5} name='cpassword' onChange={onChange} id="cpassword" />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <label htmlFor="userType" className="form-label">User Type</label>
                         <select className="form-select" name="userType" value={credentials.userType} onChange={onChange}>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
-                    </div>
+                    </div> */}
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>

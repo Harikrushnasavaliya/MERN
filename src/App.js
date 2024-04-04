@@ -12,26 +12,27 @@ import { useState } from 'react'
 
 function App() {
   const [alert, setAlert] = useState(null);
-  const showAlert = (message, type)=>{
+  const showAlert = (message, type) => {
     setAlert({
-      msg:message,
-      tye:type
+      msg: message,
+      tye: type
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       setAlert(null);
-    },1500);
+    }, 1500);
   }
   return (
     <NoteState>
       <Router>
         <Navbar alert={alert} />
-        <Alert/>
+        <Alert />
         <div className="container">
           <Routes>
-            <Route path="/" element={<Home showAlert = {showAlert}/>} />
-            <Route path="/about" element={<About showAlert = {showAlert}/>} />
-            <Route path="/login" element={<Login showAlert = {showAlert}/>} />
-            <Route path="/signup" element={<Signup showAlert = {showAlert}/>} />
+            <Route path="/notes" element={<Home showAlert={showAlert} />} />
+            <Route path="/about" element={<About showAlert={showAlert} />} />
+            <Route path="/login" element={<Login showAlert={showAlert} />} />
+            <Route path="/" element={<Login showAlert={showAlert} />} />
+            <Route path="/signup" element={<Signup showAlert={showAlert} />} />
           </Routes>
         </div>
       </Router>
