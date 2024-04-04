@@ -16,12 +16,11 @@ const NoteState = (props) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYwMWRhNWQyZmNmMzNlODk5ZGZmNTg5IiwibmFtZSI6ImxlbGExYSIsImVtYWlsIjoibGVsYTFhQGVtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHQ4b0hiY1JiLld3MUZZOWxrYkRreU9wT3hhU3gySThSLmFNUkQ4QU94bS9ncFV6UDVyaWRlIn0sImlhdCI6MTcxMTM5NzQ3NH0.0uokzZX2bYC2PiPzYi12Myh15_myUgdpRkLXt7pq484'
-                },
+                    'auth-token': localStorage.getItem("token"),                },
             });
             if (response.ok) {
                 const json = await response.json();
-                setNotes(json); 
+                setNotes(json);
             } else {
                 console.error('Failed to fetch notes');
             }
@@ -31,32 +30,32 @@ const NoteState = (props) => {
     }
 
     const addNote = async (title, description, tag) => {
-        try{
-        const response = await fetch(`${host}/api/notes/addnote`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYwMWRhNWQyZmNmMzNlODk5ZGZmNTg5IiwibmFtZSI6ImxlbGExYSIsImVtYWlsIjoibGVsYTFhQGVtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHQ4b0hiY1JiLld3MUZZOWxrYkRreU9wT3hhU3gySThSLmFNUkQ4QU94bS9ncFV6UDVyaWRlIn0sImlhdCI6MTcxMTM5NzQ3NH0.0uokzZX2bYC2PiPzYi12Myh15_myUgdpRkLXt7pq484'
-            },
-            body: JSON.stringify({ title, description, tag })
-        });
-        const newNote = {
-            "_id": "66033aac860ed5da45994c2c",
-            "user": "6601da5d2fcf33e899dff589",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "__v": 0
-        };
-        if (response.ok) {
-            const newNote = await response.json();
-            setNotes([...notes, newNote]); 
-        } else {
-            console.error('Failed to add note');
+        try {
+            const response = await fetch(`${host}/api/notes/addnote`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ title, description, tag })
+            });
+            // const newNote = {
+            //     "_id": "66033aac860ed5da45994c2c",
+            //     "user": "6601da5d2fcf33e899dff589",
+            //     "title": title,
+            //     "description": description,
+            //     "tag": tag,
+            //     "__v": 0
+            // };
+            if (response.ok) {
+                const newNote = await response.json();
+                setNotes([...notes, newNote]);
+            } else {
+                console.error('Failed to add note');
+            }
+        } catch (error) {
+            console.error('Error adding note:', error);
         }
-    } catch (error) {
-        console.error('Error adding note:', error);
-    }
     };
 
     const editNote = async (id, title, description, tag) => {
@@ -65,8 +64,7 @@ const NoteState = (props) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYwMWRhNWQyZmNmMzNlODk5ZGZmNTg5IiwibmFtZSI6ImxlbGExYSIsImVtYWlsIjoibGVsYTFhQGVtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHQ4b0hiY1JiLld3MUZZOWxrYkRreU9wT3hhU3gySThSLmFNUkQ4QU94bS9ncFV6UDVyaWRlIn0sImlhdCI6MTcxMTM5NzQ3NH0.0uokzZX2bYC2PiPzYi12Myh15_myUgdpRkLXt7pq484'
-                },
+                    'auth-token': localStorage.getItem("token"),                },
                 body: JSON.stringify({ title, description, tag })
             });
             const json = await response.json();
@@ -83,8 +81,7 @@ const NoteState = (props) => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYwMWRhNWQyZmNmMzNlODk5ZGZmNTg5IiwibmFtZSI6ImxlbGExYSIsImVtYWlsIjoibGVsYTFhQGVtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHQ4b0hiY1JiLld3MUZZOWxrYkRreU9wT3hhU3gySThSLmFNUkQ4QU94bS9ncFV6UDVyaWRlIn0sImlhdCI6MTcxMTM5NzQ3NH0.0uokzZX2bYC2PiPzYi12Myh15_myUgdpRkLXt7pq484'
-                },
+                    'auth-token': localStorage.getItem("token"),                },
             });
             if (response.ok) {
                 const json = await response.json();

@@ -6,14 +6,22 @@ const { body, validationResult } = require('express-validator');
 
 
 router.get('/fetchallnotes', fetchUser, async (req, res) => {
+    debugger
     try {
-        const notes = await Note.find({ user: req.user.id });
-        res.json(notes)
+        if (req.user.userType === 'admin') {
+            const notes = await Note.find();
+            console.log(notes);
+            res.json(notes);
+        } else {
+            const notes = await Note.find({ user: req.user.id });
+            console.log(notes);
+            res.json(notes);
+        }
     } catch (error) {
-        console.error('Error saving user:', error.message);
-        res.status(500).json({ error: 'An error occurred while saving user' });
+        console.error('Error fetching notes:', error.message);
+        res.status(500).json({ error: 'An error occurred while fetching notes' });
     }
-})
+});
 
 
 
@@ -84,7 +92,7 @@ router.delete('/deletenote/:id', fetchUser, async (req, res) => {
             return res.status(401).send('Not Allowed');
         }
         note = await Note.findByIdAndDelete(req.params.id)
-        res.json({ "Success": "Note has been deleted", note: note });
+        res.json({ success: true, message: 'Note deleted successfully' });
     } catch (error) {
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });

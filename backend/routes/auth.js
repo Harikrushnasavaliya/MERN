@@ -11,9 +11,9 @@ let success = false;
 
 
 router.post('/createuser', [
-    body('name', 'hum pe to hehi na').isLength({ min: 3 }),
+    body('name', 'Name must be at least 3 characters long').isLength({ min: 3 }),
     body('email').isEmail(),
-    body('password').isLength({ min: 5 })
+    body('password', 'Password must be at least 5 characters long').isLength({ min: 5 })
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -32,20 +32,25 @@ router.post('/createuser', [
             return res.status(400).json({ error: `User with this ${errorFields.join(' and ')} already exists` });
         }
         const salt = await bcrypt.genSalt(10);
-        const secPass = await bcrypt.hash(req.body.password, salt)
+        const secPass = await bcrypt.hash(req.body.password, salt);
+        const userType = req.body.userType;
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: secPass
+            password: secPass,
+            userType: userType 
         });
+
         const Data = {
             user: {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                password: user.password
+                password: user.password,
+                userType: user.userType 
             }
         };
+        console.log(Data);
         const token = jwt.sign(Data, JWT_Secret);
         success = true;
         res.json({ success, token });
@@ -91,8 +96,9 @@ router.post('/login', [
         };
         const token = jwt.sign(Data, JWT_Secret);
         success = true;
-        res.json({ success, token });
-        console.log(token);
+        const Name = Data.user.name; 
+        res.json({ success, token, Name });
+
         // }
     } catch (error) {
         console.error('Error saving user:', error.message);
