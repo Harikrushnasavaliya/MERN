@@ -8,7 +8,7 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetchallnotes', fetchUser, async (req, res) => {
     debugger
     try {
-        if (req.user.userType === 'admin') {
+        if (req.user.id === 'Add your User ID') {
             const notes = await Note.find();
             console.log(notes);
             res.json(notes);
