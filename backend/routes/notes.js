@@ -8,7 +8,7 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetchallnotes', fetchUser, async (req, res) => {
     debugger
     try {
-        if (req.user.id === '660e4f4e028b6c14cfba1bc6') {
+        if (req.user.id === '661ad3b37a7981f694f61b76') {
             const notes = await Note.find();
             console.log(notes);
             res.json(notes);
@@ -22,8 +22,6 @@ router.get('/fetchallnotes', fetchUser, async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching notes' });
     }
 });
-
-
 
 router.post('/addnote', fetchUser, [
     body('title', 'hum pe to hehi na').isLength({ min: 3 }),
@@ -53,10 +51,7 @@ router.post('/addnote', fetchUser, [
     }
     const notes = await Note.find({ user: req.user.id });
     res.json(notes)
-})
-
-
-
+});
 
 router.put('/updatenote/:id', fetchUser, async (req, res) => {
     try {
@@ -78,10 +73,7 @@ router.put('/updatenote/:id', fetchUser, async (req, res) => {
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });
     }
-})
-
-
-
+});
 
 router.delete('/deletenote/:id', fetchUser, async (req, res) => {
     try {
@@ -98,8 +90,6 @@ router.delete('/deletenote/:id', fetchUser, async (req, res) => {
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });
     }
-})
-
-
+});
 
 module.exports = router

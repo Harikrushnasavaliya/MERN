@@ -9,7 +9,6 @@ const JWT_Secret = "Humpe to he hi na";
 let success = false;
 
 
-
 router.post('/createuser', [
     body('name', 'Name must be at least 3 characters long').isLength({ min: 3 }),
     body('email').isEmail(),
@@ -37,8 +36,8 @@ router.post('/createuser', [
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: secPass
-            // userType: userType 
+            password: secPass,
+            userType: userType 
         });
 
         const Data = {
@@ -46,8 +45,8 @@ router.post('/createuser', [
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                password: user.password
-                // userType: user.userType 
+                password: user.password,
+                userType: user.userType 
             }
         };
         console.log(Data);
@@ -58,12 +57,7 @@ router.post('/createuser', [
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });
     }
-})
-
-
-
-
-
+});
 
 router.post('/login', [
     // body('name', 'hum pe to hehi na').isLength({ min: 3 }),
@@ -91,25 +85,22 @@ router.post('/login', [
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                password: user.password
+                password: user.password,
+                userType: user.userType 
             }
         };
         const token = jwt.sign(Data, JWT_Secret);
         success = true;
         const Name = Data.user.name; 
-        res.json({ success, token, Name });
+        const UserType = Data.user.userType; 
+        res.json({ success, token, Name, UserType });
 
         // }
     } catch (error) {
         console.error('Error saving user:', error.message);
         res.status(500).json({ error: 'An error occurred while saving user' });
     }
-})
-
-
-
-
-
+});
 
 router.post('/getuser', fetchUser, async (req, res) => {
     try {
@@ -120,5 +111,34 @@ router.post('/getuser', fetchUser, async (req, res) => {
         console.error(error.message);
         res.status(500).send('An error occurred while saving user');
     }
-})
+});
+
+router.get('/getallusers', async (req, res) => {
+    try {
+        const users = await User.find().select("-password");
+        res.json(users);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('An error occurred while retrieving users');
+    }
+});
+
+
+router.put('/promote/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.userType = user.userType === 'admin' ? null : 'admin';
+        const updatedUser = await user.save();
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error toggling admin status:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;

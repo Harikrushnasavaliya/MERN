@@ -4,6 +4,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
+    // const [isAdmin, setIsAdmin] = useState(false);
+    let isAdmin = false;
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -11,7 +13,6 @@ const Navbar = () => {
         const token = localStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true);
-            // Fetch user data and set userName
             fetchUserData(token);
         }
     }, []);
@@ -26,18 +27,27 @@ const Navbar = () => {
             });
             const json = await response.json();
             if (json.success) {
-                setUserName(localStorage.getItem("Name") );
+                setUserName(localStorage.getItem("Name"));
+                // setIsAdmin(localStorage.getItem("userType") === "admin"); 
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
     };
-    
+
+    const aa = localStorage.getItem("userType");
+    if(aa === "admin"){
+        isAdmin = true;
+    }else{
+        isAdmin = false;
+    }
 
     const handleLogout = () => {
+        isAdmin = false;
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         setUserName('');
+        // setIsAdmin(false);
         navigate('/login');
     };
 
@@ -54,6 +64,11 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Home</Link>
                             </li>
+                            {isAdmin && (
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${location.pathname === "/manage" ? "active" : ""}`} to="/manage">Manage User</Link>
+                                </li>
+                            )}
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
                             </li>
@@ -73,7 +88,7 @@ const Navbar = () => {
                 </div>
             </nav>
         </div>
-    )
-}
+    );
+};
 
 export default Navbar;
